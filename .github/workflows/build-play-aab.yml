@@ -27,6 +27,17 @@ jobs:
         with:
           gradle-version: "8.13"
 
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Installer les dependances
+        run: npm ci
+
+      - name: Synchroniser Capacitor Android
+        run: npx cap sync android
+
       - name: Creer la cle de signature
         env:
           STORE_PASS: ${{ inputs.keystore_password }}
