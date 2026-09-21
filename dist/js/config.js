@@ -1,0 +1,26 @@
+export const GAME_CONFIG = Object.freeze({
+  BOARD_SIZE: 4,
+  MAX_LEVEL: 20,
+  SPAWN_LEVEL_1_PROBABILITY: 0.9,
+  MOVE_LOCK_MS: 185,
+  SWIPE_THRESHOLD: 28,
+  SAVE_KEY: "toutou48.save.v2",
+  PROFILE_KEY: "toutou48.profile.v2",
+  SETTINGS_KEY: "toutou48.settings.v2",
+  TUTORIAL_KEY: "toutou48.tutorial.v2"
+});
+
+export const MONETIZATION_CONFIG = {
+  ADS_ENABLED: true,
+  REWARDED_ADS_ENABLED: true,
+  INTERSTITIAL_ADS_ENABLED: true,
+  INTERSTITIAL_FREQUENCY: 3,
+  FREE_UNDOS: 1,
+  FREE_REMOVALS: 0,
+  FREE_SHUFFLES: 0,
+  STARTING_COINS: 120,
+  COINS_PER_MERGE_STEP: 5,
+  JOKER_COSTS: Object.freeze({ undo: 60, remove: 90, shuffle: 120 }),
+  SECOND_CHANCE_LIMIT: 1,
+  REMOVE_ADS_PURCHASED: false
+};

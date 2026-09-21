@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#173b30">
+  <meta name="description" content="TOUTOU48, le puzzle de fusion où la meute grandit du Chihuahua au Mastiff.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="preload" href="./assets/dog-breed-portrait-atlas.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="./styles.css">
+  <title>TOUTOU48 — Fais grandir la meute</title>
+</head>
+<body data-screen="home">
+  <main id="app">
+    <div class="ambient-layer" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <section class="screen home-screen is-active" data-screen="home" aria-labelledby="homeTitle">
+      <div class="home-content">
+        <div class="brand-lockup">
+          <div class="brand-paw" aria-hidden="true"><span>48</span></div>
+          <div><p>LE PUZZLE DE LA MEUTE</p><h1 id="homeTitle">TOUTOU<span>48</span></h1></div>
+        </div>
+
+        <div class="hero-kennel" aria-hidden="true">
+          <div class="hero-ring"></div>
+          <div id="heroDog" class="hero-dog"></div>
+          <div class="hero-tag"><small>MEILLEUR CHIEN</small><strong id="homeDogName">Chihuahua</strong></div>
+        </div>
+
+        <p class="tagline">Fais grandir la meute.</p>
+        <button id="playButton" class="button button-hero" type="button"><span>JOUER</span><b aria-hidden="true">›</b></button>
+
+        <div class="home-menu" aria-label="Menu principal">
+          <button type="button" data-action="collection"><span class="menu-icon">⌂</span><span>CHENIL</span></button>
+          <button type="button" data-action="stats"><span class="menu-icon">◫</span><span>STATS</span></button>
+          <button type="button" data-action="settings"><span class="menu-icon">⚙</span><span>RÉGLAGES</span></button>
+        </div>
+
+        <div class="home-record"><span>RECORD</span><strong id="homeRecord">0</strong></div>
+      </div>
+    </section>
+
+    <section class="screen game-screen" data-screen="game" aria-label="Partie TOUTOU48">
+      <div class="game-shell">
+        <header class="game-header">
+          <button id="homeButton" class="round-button" type="button" aria-label="Retour à l'accueil">‹</button>
+          <div class="mini-brand" aria-label="TOUTOU48">TOUTOU<span>48</span></div>
+          <button class="currency" type="button" aria-label="Voir l’utilité des pièces"><i aria-hidden="true">●</i><strong id="coinValue">0</strong></button>
+        </header>
+
+        <div class="score-strip">
+          <div><span>SCORE</span><strong id="scoreValue">0</strong></div>
+          <div><span>MEILLEUR</span><strong id="bestValue">0</strong></div>
+          <button id="missionsButton" type="button"><span>MISSIONS</span><strong>◆</strong></button>
+        </div>
+
+        <div class="breed-ribbon">
+          <span class="breed-status">PLUS GRANDE RACE</span>
+          <strong id="maxDogName">Chihuahua</strong>
+          <b id="maxDogLevel">Niv. 1</b>
+        </div>
+
+        <div id="board" class="board" role="application" aria-label="Plateau de jeu 4 par 4. Glissez ou utilisez les flèches du clavier.">
+          <div class="board-slots" aria-hidden="true">
+            <i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i>
+            <i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i>
+            <i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i>
+            <i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i><i class="board-slot"></i>
+          </div>
+          <div id="tileLayer" class="tile-layer"></div>
+          <div id="ghostLayer" class="ghost-layer" aria-hidden="true"></div>
+          <div id="deleteHint" class="delete-hint" hidden>TOUCHEZ UN CHIEN À RETIRER</div>
+        </div>
+
+        <p class="gesture-hint"><span aria-hidden="true">↔</span> Glissez pour réunir deux chiens identiques</p>
+
+        <div class="joker-bar" aria-label="Jokers">
+          <button type="button" data-joker="undo" aria-label="Annuler le dernier mouvement"><i aria-hidden="true">↶</i><span>ANNULER</span><b data-joker-count="undo">3</b></button>
+          <button type="button" data-joker="remove" aria-label="Supprimer une tuile"><i aria-hidden="true">×</i><span>SUPPRIMER</span><b data-joker-count="remove">1</b></button>
+          <button type="button" data-joker="shuffle" aria-label="Mélanger le plateau"><i aria-hidden="true">⇄</i><span>MÉLANGER</span><b data-joker-count="shuffle">1</b></button>
+        </div>
+
+        <nav class="game-nav" aria-label="Actions de partie">
+          <button id="newGameButton" type="button"><span aria-hidden="true">＋</span>NOUVELLE</button>
+          <button type="button" data-action="collection"><span aria-hidden="true">⌂</span>CHENIL</button>
+          <button type="button" data-action="settings"><span aria-hidden="true">⚙</span>RÉGLAGES</button>
+        </nav>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="appDialog" class="app-dialog">
+    <div class="dialog-topline"></div>
+    <button class="dialog-close" type="button" aria-label="Fermer" onclick="this.closest('dialog').close()">×</button>
+    <h2 id="dialogTitle"></h2>
+    <div id="dialogBody" class="dialog-body"></div>
+    <div id="dialogActions" class="dialog-actions"></div>
+  </dialog>
+
+  <div id="tutorial" class="tutorial" hidden role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+    <div class="tutorial-card">
+      <div class="tutorial-dots"><i class="is-active"></i><i></i><i></i></div>
+      <div id="tutorialVisual" class="tutorial-visual" aria-hidden="true"><span>←</span><span>→</span></div>
+      <small>BIENVENUE DANS LA MEUTE</small>
+      <h2 id="tutorialTitle">GLISSE POUR DÉPLACER LES CHIENS</h2>
+      <p id="tutorialText">Sur mobile, glisse dans une direction. Sur ordinateur, utilise les flèches.</p>
+      <button id="tutorialNext" type="button" class="button button-primary">SUIVANT</button>
+    </div>
+  </div>
+
+  <div id="adSimulation" class="ad-simulation" hidden role="dialog" aria-modal="true" aria-labelledby="adTitle">
+    <span class="ad-badge">ANNONCE TEST</span>
+    <div class="ad-card" aria-hidden="true"><b>TOUTOU</b><i>48</i><em>La pause de la meute</em></div>
+    <strong id="adTitle">Publicité récompensée</strong>
+    <small>La récompense sera accordée à la fin.</small>
+    <div class="ad-progress" aria-hidden="true"><i></i></div>
+    <button class="button button-primary" type="button" hidden>CONTINUER</button>
+  </div>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

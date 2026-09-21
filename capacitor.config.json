@@ -1,0 +1,12 @@
+{
+  "appId": "com.supatrik.toutou48v2",
+  "appName": "TOUTOU48 V2",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0f2c25"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}
