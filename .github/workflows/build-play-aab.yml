@@ -1,0 +1,78 @@
+name: Build Google Play AAB
+
+on:
+  workflow_dispatch:
+    inputs:
+      keystore_password:
+        description: "Mot de passe du keystore"
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le projet
+        uses: actions/checkout@v4
+
+      - name: Installer Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Installer Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.13"
+
+      - name: Creer la cle de signature
+        env:
+          STORE_PASS: ${{ inputs.keystore_password }}
+        run: |
+          keytool -genkeypair \
+            -keystore toutou48-release.jks \
+            -storetype PKCS12 \
+            -storepass "$STORE_PASS" \
+            -alias toutou48 \
+            -keypass "$STORE_PASS" \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=TOUTOU48, OU=Mobile, O=TOUTOU48, L=Paris, ST=Ile-de-France, C=FR"
+
+      - name: Compiler AAB
+        working-directory: android
+        run: gradle :app:bundleRelease
+
+      - name: Preparer AAB
+        run: cp android/app/build/outputs/bundle/release/app-release.aab TOUTOU48-v1.aab
+
+      - name: Signer AAB
+        env:
+          STORE_PASS: ${{ inputs.keystore_password }}
+        run: |
+          jarsigner -verbose \
+            -sigalg SHA256withRSA \
+            -digestalg SHA-256 \
+            -keystore toutou48-release.jks \
+            -storepass "$STORE_PASS" \
+            -keypass "$STORE_PASS" \
+            TOUTOU48-v1.aab \
+            toutou48
+
+      - name: Verifier signature
+        run: jarsigner -verify TOUTOU48-v1.aab
+
+      - name: Publier AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOUTOU48-Google-Play-AAB
+          path: TOUTOU48-v1.aab
+
+      - name: Sauvegarder cle de signature
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOUTOU48-SIGNING-KEY
+          path: toutou48-release.jks
